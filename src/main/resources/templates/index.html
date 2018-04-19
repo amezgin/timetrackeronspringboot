@@ -1,0 +1,85 @@
+<!DOCTYPE HTML>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Admin view</title>
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
+    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
+    <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.js"></script>
+
+    <script th:src="@{/main.js}"></script>
+    <link th:href="@{/main.css}" rel="stylesheet" />
+    <head>
+<body ng-app="UserManagement" ng-controller="UserController">
+<br/>
+<form align="center" class="form-inline" role="form" ng-submit="submitUser()">
+    <div class="container">
+        <div class="row">
+            <div class="col-xs-6 col-sm-6 col-lg-12">
+                <table class="table table-condensed" align="center">
+                    <tbody>
+                    <tr>
+                        <td><input type="hidden" class="form-control" ng-model="userForm.userId"/></td>
+                        <td><input type="text" placeholder="Login" class="form-control" ng-model="userForm.userName"/></td>
+                        <td><input type="text" placeholder="Password" class="form-control" ng-model="userForm.userPassword"/></td>
+                        <td><select class="form-control" ng-model="userForm.userRole" ng-options="role in roles">
+                            <option
+                                     value="">Select Role</option>
+                            </select>
+                        </td>
+                        <td><select class="form-control">
+                            <option ng-repeat="enabled in enableds" value="{{enabled.key}}" ng-model="userForm.userEnabled">{{enabled.value}}</option>
+                        </select>
+                        </td>
+                        <td>
+                            <input type="submit" value="Submit"/>
+                        </td>
+                    </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+    </div>
+</form>
+<div style="position: relative;">
+    <button type="button" class="btn btn-default btn-lg btn-block"><a ng-click="createUser()">Create User</a></button>
+</div>
+<br/>
+<div class="container">
+    <div class="row">
+        <div class="col-xs-6 col-sm-6 col-lg-12">
+            <table class="table table-condensed" align="center">
+                <caption>
+                    <legend align="center">List of Users</legend>
+                </caption>
+                <thead>
+                <tr>
+                    <th>Id</th>
+                    <th>Login</th>
+                    <th>Password</th>
+                    <th>Role</th>
+                    <th>Enabled</th>
+                    <th>Edit</th>
+                    <th>Delete</th>
+                </tr>
+                </thead>
+                <tbody>
+                <tr ng-repeat="user in users">
+                    <td>{{ user.id }}</td>
+                    <td>{{ user.name }}</td>
+                    <td>{{ user.password }}</td>
+                    <td>{{ user.role.name }}</td>
+                    <td>{{ user.enabled }}</td>
+                    <td>
+                        <a ng-click="editUser(user)" class="edit-button">Edit</a>
+                    </td>
+                    <td>
+                        <a ng-click="deleteUser(user)" class="delete-button">Delete</a>
+                    </td>
+                </tr>
+                </tbody>
+            </table>
+        </div>
+    </div>
+</div>
+</body>
+</html>

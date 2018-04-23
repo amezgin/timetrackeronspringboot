@@ -17,5 +17,11 @@ public interface CrudRoleRepository extends JpaRepository<Role, Integer> {
     @Override
     Optional<Role> findById(Integer id);
 
+    /**
+     * Returns the searched role by the name.
+     *
+     * @param name the role name.
+     * @return role.
+     */
     Role getByName(String name);
 }

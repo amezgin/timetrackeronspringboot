@@ -5,6 +5,8 @@ import org.springframework.stereotype.Repository;
 import ru.mezgin.tracker.model.Status;
 
 import javax.persistence.EntityManager;
+import javax.persistence.NoResultException;
+import javax.persistence.Query;
 import java.time.LocalDateTime;
 import java.util.List;
 
@@ -18,14 +20,34 @@ import java.util.List;
 @Repository
 public class DataJpaStatusRepository implements StatusRepository {
 
-    @Autowired
+    /**
+     * Entity manager.
+     */
     private EntityManager entityManager;
 
-    @Autowired
+    /**
+     * Status repository.
+     */
     private CrudStatusRepository crudStatusRepository;
 
-    @Autowired
+    /**
+     * User repository.
+     */
     private CrudUserRepository crudUserRepository;
+
+    /**
+     * The constructor.
+     *
+     * @param entityManager        Entity manager.
+     * @param crudStatusRepository Status repository.
+     * @param crudUserRepository   User repository.
+     */
+    @Autowired
+    public DataJpaStatusRepository(EntityManager entityManager, CrudStatusRepository crudStatusRepository, CrudUserRepository crudUserRepository) {
+        this.entityManager = entityManager;
+        this.crudStatusRepository = crudStatusRepository;
+        this.crudUserRepository = crudUserRepository;
+    }
 
     @Override
     public Status save(Status status, int userId) {
@@ -36,30 +58,39 @@ public class DataJpaStatusRepository implements StatusRepository {
         return this.crudStatusRepository.save(status);
     }
 
+    @Override
     public Status getLastStartWorkDay(int userId) {
-        String sql = "SELECT s FROM Status s WHERE s.user.id=:userId AND s.startNewWorkDay=true ORDER BY s.dateTime DESC";
-        Status result = (Status) this.entityManager.createQuery(sql)
+        String hql = "SELECT s FROM Status s WHERE s.user.id=:userId AND s.startNewWorkDay=true ORDER BY s.dateTime DESC";
+        Status result = (Status) this.entityManager.createQuery(hql)
                 .setParameter("userId", userId)
                 .setMaxResults(1)
                 .getSingleResult();
         return result;
     }
 
+    @Override
     public Status getLastEndWorkDay(int userId) {
-        String sql = "SELECT s FROM Status s WHERE s.user.id=:userId AND s.endWorkDay=true ORDER BY s.dateTime DESC";
-        Status result = (Status) this.entityManager.createQuery(sql)
+        String hql = "SELECT s FROM Status s WHERE s.user.id=:userId AND s.endWorkDay=true ORDER BY s.dateTime DESC";
+        Status result = (Status) this.entityManager.createQuery(hql)
                 .setParameter("userId", userId)
                 .setMaxResults(1)
                 .getSingleResult();
         return result;
     }
 
+    @Override
     public Status getLastActionUser(int userId) {
-        String sql = "SELECT s FROM Status s WHERE s.user.id=:userId ORDER BY s.dateTime DESC";
-        Status result = (Status) this.entityManager.createQuery(sql)
-                .setParameter("userId", userId)
-                .setMaxResults(1)
-                .getSingleResult();
+        String hql = "SELECT s FROM Status s WHERE s.user.id=:userId ORDER BY s.dateTime DESC";
+        Query query = this.entityManager.createQuery(hql);
+        Status result = null;
+        try {
+            result = (Status) query
+                    .setParameter("userId", userId)
+                    .setMaxResults(1)
+                    .getSingleResult();
+        } catch (NoResultException nre) {
+
+        }
         return result;
     }
 

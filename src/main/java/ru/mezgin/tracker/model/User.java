@@ -56,13 +56,11 @@ public class User extends AbstractBaseEntity {
      * @param id       id.
      * @param name     name.
      * @param password password.
-     * @param role     role.
      * @param enabled  enabled.
      */
-    public User(Integer id, String name, String password, Role role, boolean enabled) {
+    public User(Integer id, String name, String password, boolean enabled) {
         super(id, name);
         this.password = password;
-        this.role = role;
         this.enabled = enabled;
     }
 

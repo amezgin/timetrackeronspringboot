@@ -4,22 +4,17 @@ var app = angular.module("UserManagement", []);
 app.controller("UserController", function($scope, $http) {
     $scope.users = [];
     $scope.userForm = {
-        userId: 1,
-        userName: "",
-        userPassword: "",
-        userRole: "",
-        userEnabled: ""
+        id: 1,
+        name: "",
+        password: "",
+        role: "",
+        enabled: ""
     };
 
-    $scope.roles = [
-        {key:"2", name:"USER"},
-        {key:"1", name:"ADMIN"}
-    ];
-
-    $scope.enableds = [
-        {key:"0", name:"FALSE"},
-        {key:"1", name:"TRUE"}
-    ];
+    $scope.roles = {
+            ROLE_USER: "{\"id\":1,\"name\":\"ROLE_USER\"}",
+            ROLE_ADMIN: "{\"id\":2,\"name\":\"ROLE_ADMIN\"}"
+    };
 
     // Now load the data from server
     _refreshUserData();
@@ -31,12 +26,12 @@ app.controller("UserController", function($scope, $http) {
         var method = "";
         var url = "";
 
-        if ($scope.userForm.userId == -1) {
+        if ($scope.userForm.id == -1) {
             method = "POST";
-            url = '/users';
+            url = '/admins';
         } else {
             method = "PUT";
-            url = '/users';
+            url = '/admins';
         }
 
         $http({
@@ -54,21 +49,21 @@ app.controller("UserController", function($scope, $http) {
     };
 
     // HTTP DELETE- delete user by Id
-    // Call: http://localhost:8080/user/{userId}
+    // Call: http://localhost:8080/user/{id}
     $scope.deleteUser = function(user) {
         $http({
             method: 'DELETE',
-            url: '/users/' + user.id
+            url: '/admins/' + user.id
         }).then(_success, _error);
     };
 
     // In case of edit
     $scope.editUser = function(user) {
-        $scope.userForm.userId = user.id;
-        $scope.userForm.userName = user.name;
-        $scope.userForm.userPassword = user.password;
-        $scope.userForm.userRole = user.role.name;
-        $scope.userForm.userEnabled = user.enabled;
+        $scope.userForm.id = user.id;
+        $scope.userForm.name = user.name;
+        $scope.userForm.password = user.password;
+        $scope.userForm.role = user.role.name;
+        $scope.userForm.enabled = user.enabled;
     };
 
     // Private Method
@@ -77,7 +72,7 @@ app.controller("UserController", function($scope, $http) {
     function _refreshUserData() {
         $http({
             method: 'GET',
-            url: '/users'
+            url: '/admins'
         }).then(
             function(res) { // success
                 $scope.users = res.data;
@@ -103,10 +98,10 @@ app.controller("UserController", function($scope, $http) {
 
     // Clear the form
     function _clearFormData() {
-        $scope.userForm.userId = -1;
-        $scope.userForm.userName = "";
-        $scope.userForm.userPassword = "";
-        $scope.userForm.userRole = "";
-        $scope.userForm.userEnabled = "";
+        $scope.userForm.id = -1;
+        $scope.userForm.name = "";
+        $scope.userForm.password = "";
+        $scope.userForm.role = "";
+        $scope.userForm.enabled = "";
     };
 });

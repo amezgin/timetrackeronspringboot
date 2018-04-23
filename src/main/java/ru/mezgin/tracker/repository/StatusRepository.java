@@ -33,4 +33,28 @@ public interface StatusRepository {
      * @return a list of recent user actions.
      */
     List<Status> getBetween(LocalDateTime startDate, LocalDateTime endDate, int userId);
+
+    /**
+     * Returns the last start work day.
+     *
+     * @param userId user ID.
+     * @return the last start work day.
+     */
+    Status getLastStartWorkDay(int userId);
+
+    /**
+     * Returns the last end work day.
+     *
+     * @param userId user ID.
+     * @return the last end work day.
+     */
+    Status getLastEndWorkDay(int userId);
+
+    /**
+     * Returns the last action user.
+     *
+     * @param userId user ID.
+     * @return the last action user.
+     */
+    Status getLastActionUser(int userId);
 }

@@ -14,8 +14,20 @@ import ru.mezgin.tracker.model.Role;
 @Repository
 public class DataJpaRoleRepository implements RoleRepository {
 
-    @Autowired
+    /**
+     * Role repository.
+     */
     private CrudRoleRepository crudRoleRepository;
+
+    /**
+     * The constructor.
+     *
+     * @param crudRoleRepository role repository.
+     */
+    @Autowired
+    public DataJpaRoleRepository(CrudRoleRepository crudRoleRepository) {
+        this.crudRoleRepository = crudRoleRepository;
+    }
 
     @Override
     public Role get(int id) {

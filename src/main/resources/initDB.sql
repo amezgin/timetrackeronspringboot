@@ -13,7 +13,7 @@ CREATE TABLE users
 (
   id       BIGINT                  NOT NULL AUTO_INCREMENT,
   name     VARCHAR(100)            NOT NULL,
-  password VARCHAR(40)             NOT NULL,
+  password VARCHAR(100)             NOT NULL,
   role_id  BIGINT                  NOT NULL,
   enabled  BOOL DEFAULT TRUE       NOT NULL,
   PRIMARY KEY (id),

@@ -25,6 +25,12 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @Transactional
     User save(User user);
 
+    /**
+     * Deletes user by ID.
+     *
+     * @param id the user ID.
+     * @return id deleted user.
+     */
     @Transactional
     @Modifying
     @Query("DELETE FROM User u WHERE u.id=:id")
@@ -36,5 +42,11 @@ public interface CrudUserRepository extends JpaRepository<User, Integer> {
     @Override
     List<User> findAll(Sort sort);
 
+    /**
+     * Returns the searched user by the name.
+     *
+     * @param name the user name.
+     * @return user.
+     */
     User getByName(String name);
 }

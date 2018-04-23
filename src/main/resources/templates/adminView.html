@@ -6,10 +6,10 @@
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap-theme.min.css">
     <script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.6.9/angular.js"></script>
 
-    <script th:src="@{/main.js}"></script>
-    <link th:href="@{/main.css}" rel="stylesheet" />
-    <head>
+    <script th:src="@{/user.js}"></script>
+</head>
 <body ng-app="UserManagement" ng-controller="UserController">
+<th:block th:include="/_menu"></th:block>
 <br/>
 <form align="center" class="form-inline" role="form" ng-submit="submitUser()">
     <div class="container">
@@ -18,17 +18,23 @@
                 <table class="table table-condensed" align="center">
                     <tbody>
                     <tr>
-                        <td><input type="hidden" class="form-control" ng-model="userForm.userId"/></td>
-                        <td><input type="text" placeholder="Login" class="form-control" ng-model="userForm.userName"/></td>
-                        <td><input type="text" placeholder="Password" class="form-control" ng-model="userForm.userPassword"/></td>
-                        <td><select class="form-control" ng-model="userForm.userRole" ng-options="role in roles">
-                            <option
-                                     value="">Select Role</option>
+                        <td><input type="hidden" class="form-control" ng-model="userForm.id"/></td>
+                        <td><input type="text" placeholder="Login" class="form-control" ng-model="userForm.name"/>
+                        </td>
+                        <td><input type="text" placeholder="Password" class="form-control" ng-model="userForm.password"/></td>
+                        <td>
+                            <select class="form-control" ng-model="userForm.role">
+                                <option value="">Please select ROLE</option>
+                                <option value="{{roles.ROLE_USER}}">USER</option>
+                                <option value="{{roles.ROLE_ADMIN}}">ADMIN</option>
                             </select>
                         </td>
-                        <td><select class="form-control">
-                            <option ng-repeat="enabled in enableds" value="{{enabled.key}}" ng-model="userForm.userEnabled">{{enabled.value}}</option>
-                        </select>
+                        <td>
+                            <select class="form-control" ng-model="userForm.enabled">
+                                <option value="">Enabled</option>
+                                <option value="false">False</option>
+                                <option value="true">True</option>
+                            </select>
                         </td>
                         <td>
                             <input type="submit" value="Submit"/>
@@ -48,14 +54,10 @@
     <div class="row">
         <div class="col-xs-6 col-sm-6 col-lg-12">
             <table class="table table-condensed" align="center">
-                <caption>
-                    <legend align="center">List of Users</legend>
-                </caption>
                 <thead>
                 <tr>
                     <th>Id</th>
                     <th>Login</th>
-                    <th>Password</th>
                     <th>Role</th>
                     <th>Enabled</th>
                     <th>Edit</th>
@@ -64,16 +66,15 @@
                 </thead>
                 <tbody>
                 <tr ng-repeat="user in users">
-                    <td>{{ user.id }}</td>
-                    <td>{{ user.name }}</td>
-                    <td>{{ user.password }}</td>
-                    <td>{{ user.role.name }}</td>
-                    <td>{{ user.enabled }}</td>
+                    <td>{{user.id }}</td>
+                    <td>{{user.name}}</td>
+                    <td>{{user.role.name}}</td>
+                    <td>{{user.enabled}}</td>
                     <td>
-                        <a ng-click="editUser(user)" class="edit-button">Edit</a>
+                        <a ng-click="editUser(user)">Edit</a>
                     </td>
                     <td>
-                        <a ng-click="deleteUser(user)" class="delete-button">Delete</a>
+                        <a ng-click="deleteUser(user)">Delete</a>
                     </td>
                 </tr>
                 </tbody>
